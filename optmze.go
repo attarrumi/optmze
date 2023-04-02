@@ -3,6 +3,7 @@ package optmze
 import (
 	"fmt"
 	"math"
+	"time"
 )
 
 // NeuralNet is a simple neural network with one hidden layer.
@@ -69,6 +70,8 @@ func (net *NeuralNet) FeedForward(x []float64) []float64 {
 
 // number of epochs.
 func (net *NeuralNet) Train(input [][]float64, output [][]float64, opt Optimizer, epochs, batch int) {
+	start := time.Now()
+
 	params := net.Params()
 	for epoch := 0; epoch < epochs; epoch++ {
 		for i := 0; i < len(input); i += batch {
@@ -121,8 +124,9 @@ func (net *NeuralNet) Train(input [][]float64, output [][]float64, opt Optimizer
 				net.n++
 
 				if (net.n+1)%(epoch/15) == 0 {
+					last := time.Since(start)
 					avgLoss := net.total / float64(net.n)
-					fmt.Printf("num = %d loss %.4f \n", net.n+1, avgLoss)
+					fmt.Printf("Time %s num = %d loss %.4f \n", last, net.n+1, avgLoss)
 				}
 			}
 		}

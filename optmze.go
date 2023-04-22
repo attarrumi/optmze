@@ -69,7 +69,7 @@ func (net *NeuralNet) FeedForward(x []float64) []float64 {
 }
 
 // number of epochs.
-func (net *NeuralNet) Train(input [][]float64, output [][]float64, opt Optimizer, epochs, batch int) {
+func (net *NeuralNet) Train(input [][]float64, output [][]float64, opt Optimizer, epochs, batch, nums int) {
 	start := time.Now()
 
 	params := net.Params()
@@ -123,7 +123,7 @@ func (net *NeuralNet) Train(input [][]float64, output [][]float64, opt Optimizer
 				opt.Update(params, net.Grads(dW1, dB1, dW2, dB2))
 				net.n++
 
-				if (net.n+1)%(epoch/15) == 0 {
+				if (net.n+1)%nums == 0 {
 					last := time.Since(start)
 					avgLoss := net.total / float64(net.n)
 					fmt.Printf("Time %s num = %d loss %.4f \n", last, net.n+1, avgLoss)
